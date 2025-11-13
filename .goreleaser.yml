@@ -22,6 +22,6 @@ homebrew_casks:
       name: GitHub Actions
       email: actions@github.com
     directory: Casks
-    description: "quickly access the right documentation for your project's dependencies — version-aware and cached locally for fast access anytime."
+    description: "Use version-aware fuzzy-search to quickly find the _right_ documentation from your project's dependencies and cache them locally for fast access anytime."
     homepage: "https://github.com/heycomputer/pudd"
     license: MIT

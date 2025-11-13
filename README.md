@@ -1,6 +1,6 @@
-# project upstream doc discovery
+# pudd - project upstream doc discovery
 
-**pudd** makes it easy to find and read the _right_ documentation for your project’s dependencies — offline, version-aware and straight from upstream.
+Use version-aware fuzzy-search to quickly find the _right_ documentation from your project's dependencies and cache them locally for fast access anytime.
 
 ---
 
