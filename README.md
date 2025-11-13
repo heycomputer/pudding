@@ -66,3 +66,25 @@ pudd --help
 cd your-project
 pudd
 ```
+
+---
+
+## Testing
+
+Run the test suite:
+
+```bash
+make test
+```
+
+Run tests with verbose output:
+
+```bash
+make test-verbose
+```
+
+Run tests with coverage:
+
+```bash
+make test-coverage
+```
