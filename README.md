@@ -59,13 +59,11 @@ pd --help
 
 ---
 
-## Example
+## Roadmap
 
-```bash
-# Discover and open docs for your project's deps
-cd your-project
-pudd
-```
+- [ ] Terminal UI
+- [ ] Offline viewing for all currently supported project types
+- [ ] Search within docs
 
 ---
 
