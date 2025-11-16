@@ -18,7 +18,7 @@ archives:
 brews:
   - repository:
       owner: heycomputer
-      name: homebrew-pudding
+      name: homebrew-tools
       branch: main
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     commit_author:
