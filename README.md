@@ -35,12 +35,10 @@ Developers often waste time:
 
 ## Installation
 
-### Using brew (⚠️ tap is under construction ⚠️)
+### Using brew
 
 ```bash
-# doesn't work yet
-brew tap heycomputer/pudding
-brew install pudding
+brew install heycomputer/tools/pudding
 ```
 
 ### Using go install
