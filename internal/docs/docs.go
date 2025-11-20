@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os/exec"
 
+	"github.com/heycomputer/pudding/internal/web_docs"
 	"github.com/heycomputer/pudding/internal/parser"
 )
-
 // BrowserOpener is a function type for opening URLs in a browser
 type BrowserOpener func(url string) error
 
@@ -53,6 +53,9 @@ func fetchNodeDocsWithOpener(dep *parser.Dependency, browserOpener BrowserOpener
 }
 
 func fetchRubyDocsWithOpener(dep *parser.Dependency, browserOpener BrowserOpener) error {
+	// Create downloader instance
+	downloader := web_docs.NewDownloader("")
+
 	// Use RubyGems API to get the best documentation URL
 	client := NewRubyGemsAPIClient()
 	url, err := client.GetDocumentationURL(dep.Name, dep.Version)
@@ -60,7 +63,16 @@ func fetchRubyDocsWithOpener(dep *parser.Dependency, browserOpener BrowserOpener
 		// Fallback to rubygems.org page if API call fails
 		url = fmt.Sprintf("https://rubygems.org/gems/%s/versions/%s", dep.Name, dep.Version)
 	}
-	return browserOpener(url)
+
+	// Download and cache the documentation site
+	result, err := downloader.Download(url, "ruby", dep.Name, dep.Version)
+	if err != nil {
+		// If download fails, fall back to opening in browser
+		return browserOpener(url)
+	}
+
+	// Open the cached documentation in the browser
+	return browserOpener("file://" + result.IndexPath)
 }
 
 // runCommand executes an external command
