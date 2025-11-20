@@ -44,16 +44,16 @@ func ParseProjectDependencies(dir string) ([]Dependency, ProjectType, error) {
 			return deps, ProjectTypeElixir, err
 		}
 
-		// Check for package.json (JavaScript/TypeScript)
-		if fileExists(filepath.Join(currentDir, "package.json")) {
-			deps, err := ParseNodeDeps(currentDir)
-			return deps, ProjectTypeJavaScript, err
-		}
-
 		// Check for Gemfile (Ruby)
 		if fileExists(filepath.Join(currentDir, "Gemfile")) {
 			deps, err := ParseRubyDeps(currentDir)
 			return deps, ProjectTypeRuby, err
+		}
+
+		// Check for package.json (JavaScript/TypeScript)
+		if fileExists(filepath.Join(currentDir, "package.json")) {
+			deps, err := ParseNodeDeps(currentDir)
+			return deps, ProjectTypeJavaScript, err
 		}
 
 		// Move up one directory
