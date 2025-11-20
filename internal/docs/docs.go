@@ -3,10 +3,9 @@ package docs
 import (
 	"fmt"
 	"os/exec"
-
+	"strings"
 	"github.com/heycomputer/pudding/internal/parser"
 )
-
 // BrowserOpener is a function type for opening URLs in a browser
 type BrowserOpener func(url string) error
 
@@ -53,14 +52,32 @@ func fetchNodeDocsWithOpener(dep *parser.Dependency, browserOpener BrowserOpener
 }
 
 func fetchRubyDocsWithOpener(dep *parser.Dependency, browserOpener BrowserOpener) error {
-	// Use RubyGems API to get the best documentation URL
-	client := NewRubyGemsAPIClient()
-	url, err := client.GetDocumentationURL(dep.Name, dep.Version)
-	if err != nil {
-		// Fallback to rubygems.org page if API call fails
-		url = fmt.Sprintf("https://rubygems.org/gems/%s/versions/%s", dep.Name, dep.Version)
+	// Generate documentation using rdoc
+	// rdoc GEM_NAME --rdoc --version GEM_VERSION
+	cmdRunner := defaultCommandRunner
+	if err := cmdRunner("rdoc", dep.Name, "--rdoc", "--version", dep.Version); err != nil {
+		return fmt.Errorf("failed to generate rdoc for %s: %w", dep.Name, err)
 	}
-	return browserOpener(url)
+
+	// run command to get gem env home and assign to variable
+	gemEnvOutput, err := exec.Command("sh", "-c", "gem env home").Output()
+	if err != nil {
+		return fmt.Errorf("failed to get gem env home: %w", err)
+	}
+	// convert gemEnvOutput to string and strip whitespace/newlines
+	gemEnvHome := string(gemEnvOutput)
+	gemEnvHome = strings.TrimSpace(gemEnvHome)
+
+	// Get the path to the generated documentation
+	// open $(gem env home)/doc/GEM_NAME-GEM_VERSION/rdoc/table_of_contents.html
+	gemDocTocUrl := fmt.Sprintf("%s/doc/%s-%s/rdoc/table_of_contents.html", gemEnvHome, dep.Name, dep.Version)
+
+	// Open the documentation in browser using shell expansion
+	if err := browserOpener(gemDocTocUrl); err != nil {
+		return fmt.Errorf("failed to open rdoc for %s: %w", dep.Name, err)
+	}
+
+	return nil
 }
 
 // runCommand executes an external command
