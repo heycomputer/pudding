@@ -18,6 +18,7 @@ homebrew_casks:
   - repository:
       owner: heycomputer
       name: homebrew-pudding
+      branch: main
     commit_author:
       name: GitHub Actions
       email: actions@github.com
