@@ -10,7 +10,7 @@ import (
 type Dependency struct {
 	Name    string
 	Version string
-	Type    string // "elixir", "npm", "gem"
+	Type    string // "elixir", "gem"
 }
 
 // Parser interface for reading different dependency files
@@ -23,10 +23,9 @@ type Parser interface {
 type ProjectType string
 
 const (
-	ProjectTypeElixir     ProjectType = "elixir"
-	ProjectTypeJavaScript ProjectType = "javascript"
-	ProjectTypeRuby       ProjectType = "ruby"
-	ProjectTypeUnknown    ProjectType = "unknown"
+	ProjectTypeElixir  ProjectType = "elixir"
+	ProjectTypeRuby    ProjectType = "ruby"
+	ProjectTypeUnknown ProjectType = "unknown"
 )
 
 // ParseProjectDependencies detects the project type and parses dependencies
@@ -44,12 +43,6 @@ func ParseProjectDependencies(dir string) ([]Dependency, ProjectType, error) {
 			return deps, ProjectTypeElixir, err
 		}
 
-		// Check for package.json (JavaScript/TypeScript)
-		if fileExists(filepath.Join(currentDir, "package.json")) {
-			deps, err := ParseNodeDeps(currentDir)
-			return deps, ProjectTypeJavaScript, err
-		}
-
 		// Check for Gemfile (Ruby)
 		if fileExists(filepath.Join(currentDir, "Gemfile")) {
 			deps, err := ParseRubyDeps(currentDir)
@@ -65,7 +58,7 @@ func ParseProjectDependencies(dir string) ([]Dependency, ProjectType, error) {
 		currentDir = parent
 	}
 
-	return nil, ProjectTypeUnknown, fmt.Errorf("no supported project file found (mix.exs, package.json, or Gemfile)")
+	return nil, ProjectTypeUnknown, fmt.Errorf("no supported project file found (mix.exs or Gemfile)")
 }
 
 func fileExists(path string) bool {

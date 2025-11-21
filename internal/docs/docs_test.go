@@ -119,46 +119,6 @@ func TestFetchElixirDocs_CommandFailure(t *testing.T) {
 	}
 }
 
-func TestFetchNodeDocs(t *testing.T) {
-	resetMocks()
-	
-	dep := &parser.Dependency{
-		Name:    "express",
-		Version: "4.18.2",
-		Type:    "npm",
-	}
-	
-	err := fetchAndOpenWithFuncs(dep, parser.ProjectTypeJavaScript, mockCommandRunner, mockBrowserOpener)
-	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
-	}
-	
-	expectedURL := "https://www.npmjs.com/package/express/v/4.18.2"
-	if lastBrowserURL != expectedURL {
-		t.Errorf("Expected URL '%s', got '%s'", expectedURL, lastBrowserURL)
-	}
-	
-	if lastCommandRun != "" {
-		t.Errorf("Expected no command run, but got: %s", lastCommandRun)
-	}
-}
-
-func TestFetchNodeDocs_BrowserFailure(t *testing.T) {
-	resetMocks()
-	browserShouldFail = true
-	
-	dep := &parser.Dependency{
-		Name:    "express",
-		Version: "4.18.2",
-		Type:    "npm",
-	}
-	
-	err := fetchAndOpenWithFuncs(dep, parser.ProjectTypeJavaScript, mockCommandRunner, mockBrowserOpener)
-	if err == nil {
-		t.Errorf("Expected error when browser fails, got nil")
-	}
-}
-
 func TestFetchRubyDocs(t *testing.T) {
 	resetMocks()
 	
@@ -219,17 +179,6 @@ func TestAllProjectTypes(t *testing.T) {
 			},
 			expectCmd: true,
 			expectURL: false,
-		},
-		{
-			name:        "JavaScript",
-			projectType: parser.ProjectTypeJavaScript,
-			dep: &parser.Dependency{
-				Name:    "lodash",
-				Version: "4.17.21",
-				Type:    "npm",
-			},
-			expectCmd: false,
-			expectURL: true,
 		},
 		{
 			name:        "Ruby",
