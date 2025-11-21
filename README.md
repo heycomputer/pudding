@@ -19,16 +19,15 @@ Developers often waste time:
 ## Supported project types
 
 - **Elixir** — `mix.exs`
-- **JavaScript / TypeScript** — `package.json`
 - **Ruby** — `Gemfile`
 
 ---
 
 ## How it works
 
-1. pudding reads your dependency manifest (e.g. `mix.exs`, `package.json`, or `Gemfile`).
+1. pudding reads your dependency manifest (e.g. `mix.exs` or `Gemfile`).
 2. It determines the exact version of each dependency.
-3. It fetches the corresponding documentation on-demand from upstream sources (e.g. HexDocs, npmjs, rubydoc.info).
+3. It fetches the corresponding documentation on-demand from upstream sources.
 4. Docs are cached locally for offline access.
 
 ---
@@ -60,7 +59,6 @@ pd --help
 ## Roadmap
 
 - [ ] Terminal UI
-- [ ] Offline viewing for all currently supported project types
 - [ ] Search within docs
 
 ---
