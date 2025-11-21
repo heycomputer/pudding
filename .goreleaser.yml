@@ -14,7 +14,7 @@ builds:
 archives:
   - name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
-homebrew_casks:
+brews:
   - repository:
       owner: heycomputer
       name: homebrew-pudding
@@ -23,7 +23,6 @@ homebrew_casks:
     commit_author:
       name: GitHub Actions
       email: actions@github.com
-    directory: Casks
     description: "Use version-aware fuzzy-search to quickly find the _right_ documentation from your project's dependencies and cache them locally for fast access anytime."
     homepage: "https://github.com/heycomputer/pudding"
     license: MIT
